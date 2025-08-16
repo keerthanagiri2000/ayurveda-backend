@@ -16,8 +16,9 @@ export const getAllDoctors = async (req, res) => {
 
 export const createNewDoctor = async (req, res) => {
      try {
-        const { name, specialization, mode, image } = req.body;
-        const doctor = new Doctor({ name, specialization, mode, image });
+        const { name, specialization, mode } = req.body;
+        const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+        const doctor = new Doctor({ name, specialization, mode, image: imageUrl });
         await doctor.save();
         res.status(201).json({ success: true, message: "Doctor added successfully" });
     } catch (error) {
@@ -46,7 +47,7 @@ export const updateDoctor = async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid mode value" });
         }
 
-         if(!["active", "in_Active"].includes(mode)) {
+         if(!["active", "in_active"].includes(status)) {
             return res.status(400).json({ success: false, message: "Invalid status value" });
         }
 
