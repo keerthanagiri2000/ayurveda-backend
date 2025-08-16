@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { createNewDoctor, getAllDoctors, getDoctorById, updateDoctor } from "../controllers/doctorController.js";
+import { createNewDoctor, getAllActiveDoctors, getAllDoctors, getDoctorById, updateDoctor } from "../controllers/doctorController.js";
 
 const router = express.Router();
 
@@ -18,6 +18,9 @@ const upload = multer ({ storage });
 
 // Create new doctor
 router.post("/", upload.single("image"), createNewDoctor);
+
+// Get all active doctors list
+router.get("/active", getAllActiveDoctors);
 
 // Get all doctors list
 router.get("/", getAllDoctors);

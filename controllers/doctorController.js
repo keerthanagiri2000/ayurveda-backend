@@ -53,8 +53,7 @@ export const updateDoctor = async (req, res) => {
 
         const updateData = {};
         if(mode) updateData.mode = mode;
-        if (status) updateData.status = status
-        ;
+        if (status) updateData.status = status;
 
         const doctor = await Doctor.findByIdAndUpdate(
             req.params.id,
@@ -67,6 +66,15 @@ export const updateDoctor = async (req, res) => {
         } 
         res.status(200).json({ success: true, data: doctor, message: "Doctor details updated successfully" });
 
+    } catch (error) {
+        res.status(500).json({ success: true, message: error.message });
+    }
+}
+
+export const getAllActiveDoctors = async (req, res) => {
+    try {
+        const doctors = await Doctor.find({ status: "active"}, { _id: 1, name: 1 })
+        res.status(200).json({ success: true, data: doctors });
     } catch (error) {
         res.status(500).json({ success: true, message: error.message });
     }
