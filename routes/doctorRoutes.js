@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { createNewDoctor, getAllActiveDoctors, getAllDoctors, getDoctorById, updateDoctor } from "../controllers/doctorController.js";
+import { activeDoctorsList, createNewDoctor, getAllActiveDoctors, getAllDoctors, getDoctorById, updateDoctor } from "../controllers/doctorController.js";
 
 const router = express.Router();
 
@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer ({ storage });
 
+// Admin Routes
 // Create new doctor
 router.post("/", upload.single("image"), createNewDoctor);
 
@@ -30,5 +31,8 @@ router.get("/:id", getDoctorById);
 
 // Update only doctor mode and status by Id
 router.patch("/:id", updateDoctor);
+
+// User api's
+router.get("/active/list", activeDoctorsList);
 
 export default router;

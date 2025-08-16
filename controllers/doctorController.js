@@ -79,3 +79,18 @@ export const getAllActiveDoctors = async (req, res) => {
         res.status(500).json({ success: true, message: error.message });
     }
 }
+
+export const activeDoctorsList = async (req, res) => {
+    try {
+        let { page = 1, limit = 10 } = req.query;
+        page = parseInt(page);
+        limit = parseInt(limit);
+
+        const total = await Doctor.countDocuments();
+        const doctors = await Doctor.find({ status: "active" }).skip((page - 1) * limit).limit(limit);
+        res.status(200).json({ success: true, data: doctors, total, page, limit });
+
+    } catch (error) {
+        res.status(500).json({ success: true, message: error.message });
+    }
+}
