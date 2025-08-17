@@ -1,5 +1,6 @@
 import express from "express";
 import { availableSlotsForTheDoctor, createNewSlot, getAllSlotList, getSlotById, lockSlot, updateSlot } from "../controllers/slotController.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 // ADMIN API'S
@@ -20,7 +21,7 @@ router.patch("/:id", updateSlot);
 router.get("/available/:doctorId", availableSlotsForTheDoctor);
 
 // Lock slot
-router.post("/:id/lock", lockSlot);
+router.post("/:id/lock", authMiddleware, lockSlot);
 
 
 

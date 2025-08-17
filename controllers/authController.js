@@ -38,7 +38,7 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ success: true, message: "Invalid credentials" });
 
-        const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "5h" });
 
         res.json({ success: true, message: "Login successful", token, data: user});
     } catch (error) {
