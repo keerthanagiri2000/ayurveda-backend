@@ -82,12 +82,21 @@ export const getAllActiveDoctors = async (req, res) => {
 
 export const activeDoctorsList = async (req, res) => {
     try {
-        let { page, limit } = req.query;
+        let { page, limit, specialization, mode } = req.query;
         page = parseInt(page);
         limit = parseInt(limit);
 
-        const total = await Doctor.countDocuments({ status: "active" });
-        const doctors = await Doctor.find({ status: "active" }).skip((page - 1) * limit).limit(limit);
+            
+        const filter = { status: "active" };
+        if (specialization) {
+            filter.specialization = { $regex: specialization, $options: "i" };
+        }
+        if (mode) {
+            filter.mode = { $regex: mode, $options: "i" };
+        } 
+        const total = await Doctor.countDocuments(filter);
+
+        const doctors = await Doctor.find(filter).skip((page - 1) * limit).limit(limit);
         res.status(200).json({ success: true, data: doctors, total, page, limit });
 
     } catch (error) {
