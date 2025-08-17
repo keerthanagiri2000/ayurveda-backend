@@ -81,3 +81,23 @@ export const availableSlotsForTheDoctor = async (req, res) => {
     }
 }
 
+export const lockSlot = async(req, res) => {
+    try {
+        const slot = await Slot.findById(req.params.id);
+        if (!slot) return res.status(404).json({ success: false, message: "Slot not found" });
+        if (slot.booked) {
+            return res.status(400).json({ success: false, message: "Slot already booked" });
+        }
+        if (!slot.locked) {
+            slot.locked = true;
+            slot.lockedAt = Date.now();
+        }
+        await slot.save();
+        res.status(200).json({ success: true, message: "Slot locked for 5 minutes", data: slot });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success: true, message: error.message });
+    }
+}
+
