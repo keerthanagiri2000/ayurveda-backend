@@ -8,6 +8,7 @@ import slotRoutes from "./routes/slotRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js"
 import { fileURLToPath } from "url";
+import { startSlotsUnlockCron } from "./cron/unlockSlots.js";
 
 dotenv.config();
 
@@ -37,6 +38,8 @@ app.use("/api/doctors", doctorRoutes);
 app.use("/api/slots", slotRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/appointment", appointmentRoutes);
+
+startSlotsUnlockCron();
 
 app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);

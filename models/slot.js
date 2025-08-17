@@ -35,5 +35,7 @@ const slotSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+slotSchema.index({ locked: 1, lockedAt: 1  });
+
 const Slot = mongoose.model("Slot", slotSchema);
 export default Slot;
