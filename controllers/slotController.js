@@ -55,3 +55,29 @@ export const updateSlot = async (req, res) => {
     }
 };
 
+export const availableSlotsForTheDoctor = async (req, res) => {
+    try {
+        const { doctorId } = req.params;
+        const { date } = req.query;
+
+        if (!date) {
+            return res.status(400).json({ message: "Date is required" });
+        }
+
+        const startOfDay = new Date(date);
+        startOfDay.setUTCHours(0,0,0,0);
+
+        const endOfDay = new Date(date);
+        endOfDay.setUTCHours(23, 59, 59, 999);
+
+        const slot = await Slot.find({
+            doctorId,
+            startTime: { $gte: startOfDay, $lte: endOfDay }
+        }).sort({ startTime: 1 });
+        
+        res.status(200).json({ success: true, data: slot });
+    } catch (error) {
+        res.status(500).json({ success: true, message: error.message });
+    }
+}
+
