@@ -5,6 +5,7 @@ import path from "path";
 import { connectDb } from "./db.js";
 import doctorRoutes from "./routes/doctorRoutes.js";
 import slotRoutes from "./routes/slotRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import { fileURLToPath } from "url";
 
 dotenv.config();
@@ -33,6 +34,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/slots", slotRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
